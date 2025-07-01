@@ -42,6 +42,7 @@
 		left: 50%;
 		transform: translateX(-50%);
 		z-index: 1000;
+		cursor: pointer;
 	}
 
 	img.bottom-image {
@@ -98,23 +99,24 @@
 	Page under construction<br>Opening soon<br>by <strong>Lysevych Oleksandr</strong><br>© 2011–2025
 </p>
 
-<div class="tooltip-container">
+<div class="tooltip-container" id="tooltipContainer">
 	<div class="tooltip-text" id="tooltip">Homepage</div>
-	<a href="https://Lysevych.net/" id="tooltipLink">
-		<img class="bottom-image" src="https://raw.githubusercontent.com/Lysevych/Lysevych/main/Lysevych-white-logo.webp" alt="Lysevych Oleksandr">
+	<a href="https://WildFox.space/" id="tooltipLink">
+		<img class="bottom-image" src="https://raw.githubusercontent.com/Lysevych/Lysevych/main/WildFox-white-logo.webp" alt="WildFox">
 	</a>
 </div>
 
 <script>
 const tooltip = document.getElementById('tooltip');
 const tooltipLink = document.getElementById('tooltipLink');
+const tooltipContainer = document.getElementById('tooltipContainer');
 
 let touchedOnce = false;
 let timeoutId = null;
 const isTouchDevice = 'ontouchstart' in window || navigator.maxTouchPoints > 0;
 
 if (isTouchDevice) {
-	tooltipLink.addEventListener('click', function (event) {
+	tooltipContainer.addEventListener('touchstart', function (event) {
 		if (!touchedOnce) {
 			event.preventDefault();
 			touchedOnce = true;
@@ -126,21 +128,22 @@ if (isTouchDevice) {
 		} else {
 			clearTimeout(timeoutId);
 			tooltip.classList.remove('visible');
+			window.location.href = tooltipLink.href;
 		}
-	});
+	}, { passive: false });
 
-	document.addEventListener('click', function (e) {
-		if (touchedOnce && !tooltipLink.contains(e.target)) {
+	document.addEventListener('touchstart', function (e) {
+		if (touchedOnce && !tooltipContainer.contains(e.target)) {
 			touchedOnce = false;
 			tooltip.classList.remove('visible');
 			clearTimeout(timeoutId);
 		}
-	});
+	}, { passive: true });
 } else {
-	tooltipLink.addEventListener('mouseenter', function () {
+	tooltipContainer.addEventListener('mouseenter', function () {
 		tooltip.classList.add('visible');
 	});
-	tooltipLink.addEventListener('mouseleave', function () {
+	tooltipContainer.addEventListener('mouseleave', function () {
 		tooltip.classList.remove('visible');
 	});
 }
