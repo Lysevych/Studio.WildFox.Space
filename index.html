@@ -14,7 +14,13 @@
 			align-items: center;
 			background: #999999;
 			position: relative;
-			font-family: Helvetica, Sans-Serif;
+			font-family: Helvetica, Sans-Serif;-webkit-user-select: none;
+			-moz-user-select: none;
+			-ms-user-select: none;
+		}
+
+		* {
+			-webkit-user-drag: none;
 		}
 
 		.text-box {
@@ -115,6 +121,10 @@
 	</div>
 
 	<script>
+		document.addEventListener('contextmenu', e => e.preventDefault());
+		document.addEventListener('copy', e => e.preventDefault());
+		document.addEventListener('selectstart', e => e.preventDefault());
+		document.addEventListener('dragstart', e => e.preventDefault());
 		const tooltip = document.getElementById('tooltip');
 		const tooltipLink = document.getElementById('tooltipLink');
 		const tooltipContainer = document.getElementById('tooltipContainer');
