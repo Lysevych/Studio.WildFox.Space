@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>Page not found on Studio.WildFox.Space</title>
+	<style>
+		body {
+			margin: 0px 0px 0px 0px;
+			height: 100vh;
+			display: flex;
+			justify-content: center;
+			align-items: center;
+			background: #999999;
+			position: relative;
+			font-family: Helvetica, Sans-Serif;
+			user-select: none;
+			-webkit-user-select: none;
+			-moz-user-select: none;
+			-ms-user-select: none;
+		}
+
+		* {
+			-webkit-user-drag: none;
+		}
+
+		.image-box {
+			position: absolute;
+			top: 30%;
+			left: 50%;
+			transform: translate(-50%, -50%);
+			border-radius: 10px;
+			filter: drop-shadow(0px 0px 3px #666666);
+			padding: 0px 0px 0px 0px;
+			transition: transform 1s ease;
+		}
+
+		.image-box:hover {
+			cursor: pointer;
+			transform: translate(-50%, -50%) scale(1.1);
+		}
+
+		.main-image {
+			width: clamp(300px, 50vw, 700px);
+			max-height: 500px;
+			object-fit: contain;
+		}
+
+		.tooltip-container {
+			position: fixed;
+			bottom: clamp(20px, 3vw, 3vw);
+			left: 50%;
+			transform: translateX(-50%);
+			z-index: 1000;
+			cursor: pointer;
+		}
+
+		.bottom-image {
+			width: clamp(90px, 3vw, 3vw);
+			height: clamp(90px, 3vw, 3vw);
+			filter: drop-shadow(0px 0px 3px #666666);
+			cursor: pointer;
+			transition: transform 1s ease;
+		}
+
+		.bottom-image:hover {
+			transform: scale(1.1);
+		}
+
+		.tooltip-text {
+			position: absolute;
+			bottom: 100%;
+			left: 50%;
+			transform: translateX(-50%);
+			margin-bottom: 20px;
+			background-color: #ffffff;
+			color: #666666;
+			padding: 10px 10px 10px 10px;
+			border-radius: 10px;
+			font-size: 15px;
+			text-shadow: 0px 0px 3px #999999;
+			white-space: nowrap;
+			opacity: 0;
+			visibility: hidden;
+			transition: opacity 1s ease;
+		}
+
+		.tooltip-text.visible {
+			opacity: 1;
+			visibility: visible;
+			filter: drop-shadow(0px 0px 3px #666666);
+		}
+
+		.tooltip-text::after {
+			content: "";
+			position: absolute;
+			top: 100%;
+			left: 50%;
+			transform: translateX(-50%);
+			border-left: 7px solid transparent;
+			border-right: 7px solid transparent;
+			border-top: 10px solid #ffffff;
+		}
+	</style>
+</head>
+
+<body>
+
+	<div class="image-box">
+		<img class="main-image" src="https://raw.githubusercontent.com/Lysevych/Lysevych/main/404.webp" alt="Page not found on Studio.WildFox.Space">
+	</div>
+
+	<div class="tooltip-container" id="tooltipContainer">
+		<div class="tooltip-text" id="tooltip">Homepage</div>
+		<a href="https://Studio.WildFox.Space/" id="tooltipLink">
+			<img class="bottom-image" src="https://raw.githubusercontent.com/Lysevych/Lysevych/main/Studio-WildFox-space-white-logo.webp" alt="Lysevych Oleksandr">
+		</a>
+	</div>
+
+	<script>
+		document.addEventListener('contextmenu', e => e.preventDefault());
+		document.addEventListener('copy', e => e.preventDefault());
+		document.addEventListener('selectstart', e => e.preventDefault());
+		document.addEventListener('dragstart', e => e.preventDefault());
+		const tooltip = document.getElementById('tooltip');
+		const tooltipLink = document.getElementById('tooltipLink');
+		const tooltipContainer = document.getElementById('tooltipContainer');
+		let touchedOnce = false;
+		let timeoutId = null;
+		const isTouchDevice = 'ontouchstart' in window || navigator.maxTouchPoints > 0;
+		if (isTouchDevice) {
+			tooltipContainer.addEventListener('touchstart', function(event) {
+				if (!touchedOnce) {
+					event.preventDefault();
+					touchedOnce = true;
+					tooltip.classList.add('visible');
+					timeoutId = setTimeout(() => {
+						touchedOnce = false;
+						tooltip.classList.remove('visible');
+					}, 10000);
+				} else {
+					clearTimeout(timeoutId);
+					tooltip.classList.remove('visible');
+					window.location.href = tooltipLink.href;
+				}
+			}, {
+				passive: false
+			});
+			document.addEventListener('touchstart', function(e) {
+				if (touchedOnce && !tooltipContainer.contains(e.target)) {
+					touchedOnce = false;
+					tooltip.classList.remove('visible');
+					clearTimeout(timeoutId);
+				}
+			}, {
+				passive: true
+			});
+		} else {
+			tooltipContainer.addEventListener('mouseenter', function() {
+				tooltip.classList.add('visible');
+			});
+			tooltipContainer.addEventListener('mouseleave', function() {
+				tooltip.classList.remove('visible');
+			});
+		}
+	</script>
+</body>
+
+</html>
